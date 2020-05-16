@@ -78,4 +78,11 @@ public class RedisTests {
         redisTemplate.opsForValue().set("haha","luyaping");
         System.out.println(redisTemplate.opsForValue().get("haha"));
     }
+
+
+    @Test
+    void TestRedis4(){
+        String message = "{\"imei\":\"868681046818066\",\"switch\":\"1\",\"current\":0,\"voltage\":245,\"power\":0,\"error\":\"1\",\"timeStamp\":1589490175}";
+        redisTemplate.opsForList().leftPush("deviceStatus",message);
+    }
 }
