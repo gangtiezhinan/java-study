@@ -157,7 +157,6 @@ public class ExcelServiceImpl implements ExcelService {
         try {
             // 解析Excel
             List<User> parsedResult = ExcelReader.readExcel(file);
-            // todo 进行业务操作
             System.out.println(parsedResult);
         } catch (Exception e) {
             logger.warn("上传的Excel商品数据文件为空！上传时间：" + new Date());
