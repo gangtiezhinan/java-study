@@ -1,9 +1,5 @@
 package com.java.study.javastudy.springboot.entity;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.lang.NonNull;
-import sun.plugin2.message.Message;
-
 import javax.validation.constraints.NotEmpty;
 
 /**

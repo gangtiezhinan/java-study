@@ -2,7 +2,10 @@ package com.java.study.javastudy.excel.utils;
 
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,10 +74,8 @@ public class ExcelUtil {
             row = sheet.getRow(i);
             //此处用来过滤空行
             Cell cell0 = row.getCell(0);
-            cell0.setCellType(CellType.STRING);
             Cell cell1 = row.getCell(1);
-            cell1.setCellType(CellType.STRING);
-            if ("".equals(cell0.getStringCellValue()) && "".equals(cell1.getStringCellValue())) {
+            if ("".equals(getType(cell0)) && "".equals(getType(cell1))) {
                 continue;
             }
             try {
@@ -98,9 +99,7 @@ public class ExcelUtil {
                 System.out.println(obj);
                 // 添加到集合中
                 list.add(obj);
-            } catch (InstantiationException e1) {
-                e1.printStackTrace();
-            } catch (IllegalAccessException e1) {
+            } catch (InstantiationException | IllegalAccessException e1) {
                 e1.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -131,7 +130,11 @@ public class ExcelUtil {
     private static void setFieldValue(Object obj, Field f, Workbook wookbook, Cell cell) {
         try {
 
-            cell.setCellType(CellType.STRING);
+            if (cell != null) {
+                cell.setCellValue(getType(cell));
+            } else {
+                return;
+            }
 
             if (f.getType() == byte.class || f.getType() == Byte.class) {
 
@@ -183,5 +186,35 @@ public class ExcelUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    private static String getType(Cell cell) {
+        String value = null;
+        if (cell == null) {
+            return null;
+        }
+        switch (cell.getCellType()) {
+            case STRING:
+                value = String.valueOf(cell.getStringCellValue());
+                break;
+            case NUMERIC:
+                value = String.valueOf(cell.getNumericCellValue());
+                break;
+            case BLANK:
+                break;
+            case BOOLEAN:
+                value = String.valueOf(cell.getBooleanCellValue());
+                break;
+            case ERROR:
+                value = String.valueOf(cell.getErrorCellValue());
+                break;
+            case FORMULA:
+                value = String.valueOf(cell.getCellFormula());
+                break;
+            default:
+                break;
+        }
+        return value;
     }
 }
